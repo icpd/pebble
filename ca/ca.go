@@ -359,7 +359,8 @@ func New(log *log.Logger, db *db.MemoryStore, ocspResponderURL string, alternate
 	}
 
 	intermediateSubject := pkix.Name{
-		CommonName: intermediateCAPrefix + hex.EncodeToString(makeSerial().Bytes()[:3]),
+		CommonName:   intermediateCAPrefix + hex.EncodeToString(makeSerial().Bytes()[:3]),
+		Organization: []string{"demon 😈"},
 	}
 	intermediateKey, subjectKeyID, err := makeKey()
 	if err != nil {
