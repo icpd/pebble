@@ -19,6 +19,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/samber/lo"
+
 	"github.com/letsencrypt/pebble/v2/acme"
 	"github.com/letsencrypt/pebble/v2/core"
 	"github.com/letsencrypt/pebble/v2/db"
@@ -360,7 +362,7 @@ func New(log *log.Logger, db *db.MemoryStore, ocspResponderURL string, alternate
 
 	intermediateSubject := pkix.Name{
 		CommonName:   intermediateCAPrefix + hex.EncodeToString(makeSerial().Bytes()[:3]),
-		Organization: []string{"demon 😈"},
+		Organization: []string{lo.Sample([]string{"Let's Encrypt", "ZeroSSL"})},
 	}
 	intermediateKey, subjectKeyID, err := makeKey()
 	if err != nil {
