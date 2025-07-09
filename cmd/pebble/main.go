@@ -61,6 +61,11 @@ func main() {
 		"version",
 		false,
 		"Print the software version")
+	organization := flag.String(
+		"org",
+		"Let's Encrypt",
+		"Organization name to use in the certificate subject",
+	)
 	flag.Parse()
 
 	if len(flag.Args()) > 0 {
@@ -114,7 +119,7 @@ func main() {
 	}
 
 	db := db.NewMemoryStore()
-	ca := ca.New(logger, db, c.Pebble.OCSPResponderURL, alternateRoots, chainLength, profiles)
+	ca := ca.New(logger, db, c.Pebble.OCSPResponderURL, alternateRoots, chainLength, profiles, *organization)
 	va := va.New(logger, c.Pebble.HTTPPort, c.Pebble.TLSPort, *strictMode, *resolverAddress, db)
 
 	for keyID, key := range c.Pebble.ExternalAccountMACKeys {

@@ -19,8 +19,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/samber/lo"
-
 	"github.com/letsencrypt/pebble/v2/acme"
 	"github.com/letsencrypt/pebble/v2/core"
 	"github.com/letsencrypt/pebble/v2/db"
@@ -348,7 +346,7 @@ func (ca *CAImpl) newCertificate(domains []string, ips []net.IP, key crypto.Publ
 	return newCert, nil
 }
 
-func New(log *log.Logger, db *db.MemoryStore, ocspResponderURL string, alternateRoots int, chainLength int, profiles map[string]Profile) *CAImpl {
+func New(log *log.Logger, db *db.MemoryStore, ocspResponderURL string, alternateRoots int, chainLength int, profiles map[string]Profile, organization string) *CAImpl {
 	ca := &CAImpl{
 		log:      log,
 		db:       db,
@@ -362,7 +360,7 @@ func New(log *log.Logger, db *db.MemoryStore, ocspResponderURL string, alternate
 
 	intermediateSubject := pkix.Name{
 		CommonName:   intermediateCAPrefix + hex.EncodeToString(makeSerial().Bytes()[:3]),
-		Organization: []string{lo.Sample([]string{"Let's Encrypt", "ZeroSSL"})},
+		Organization: []string{organization},
 	}
 	intermediateKey, subjectKeyID, err := makeKey()
 	if err != nil {
